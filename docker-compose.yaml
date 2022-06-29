@@ -1,7 +1,6 @@
 version: '3.7'
 services:
   wanted-backend:
-  #  platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
