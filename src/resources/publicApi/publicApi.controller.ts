@@ -6,9 +6,9 @@ PublicApiService;
 export class PublicApiController {
   constructor(private readonly publicApiService: PublicApiService) {}
 
-  @Get('publicData1')
-  getPublicData1() {
-    return '용민';
+  @Get('rainfall/:region')
+  getRainfallData(@Param('region') region: string) {
+    return this.publicApiService.getRainfallData(region);
   }
 
   @Get('publicData2/:id')
