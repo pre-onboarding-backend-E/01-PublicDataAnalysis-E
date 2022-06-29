@@ -1,0 +1,23 @@
+export const Gubntype = {
+    Gangnam : 1,
+    Gangdong : 2,
+    Gangbuk : 3,
+    Gangseo : 4,
+    Gwanak  : 5,
+    Gwangjin  : 6,
+    Guro  : 7,
+    Geumcheon : 8,
+    Nowon   : 9,
+    Dobong  : 10,
+    Dongdaemun   : 11,
+    Dongjak : 12,
+    Mapo   : 13,
+    Seocho   : 14,
+    Seongbuk   : 15,
+    Songpa : 16,
+    Yangcheon    : 17,
+    Yeongdeungpo    : 18,
+    Eunpyeong    : 19,
+    Jongno : 20,
+    Jung   : 21
+}
