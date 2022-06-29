@@ -13,7 +13,7 @@ export class PublicApiService {
   }
 
   async b({ id }) {
-    const serviceKey = process.env.PIPE_SERVICE_KEY;
+    const serviceKey = process.env.PIPE_API_ACCESS_KEY;
 
     const result = await axios(
       `http://openapi.seoul.go.kr:8088/${serviceKey}/json/DrainpipeMonitoringInfo/1/30/${id}/2022062912/2022062912`,
