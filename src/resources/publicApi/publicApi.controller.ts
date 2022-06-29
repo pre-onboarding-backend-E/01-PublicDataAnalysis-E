@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { PublicApiService } from './publicApi.service';
 PublicApiService;
 
@@ -11,8 +11,8 @@ export class PublicApiController {
     return '용민';
   }
 
-  @Get('publicData2')
-  getPublicData2() {
-    return '태영';
+  @Get('publicData2/:id')
+  getPublicData2(@Param('id') id: string) {
+    return this.publicApiService.b({ id });
   }
 }
