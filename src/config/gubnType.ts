@@ -13,11 +13,15 @@ export const Gubntype = {
     Dongjak : 12,
     Mapo   : 13,
     Seocho   : 14,
-    Seongbuk   : 15,
-    Songpa : 16,
-    Yangcheon    : 17,
-    Yeongdeungpo    : 18,
-    Eunpyeong    : 19,
-    Jongno : 20,
-    Jung   : 21
+    Seodaemun :15,
+    Seongbuk   : 16,
+    Seongdong : 17,
+    Songpa : 18,
+    Yangcheon : 19,
+    Yeongdeungpo    : 20,
+    Yongsan : 21,
+    Eunpyeong    : 22,
+    Jongno : 23,
+    Jung   : 24,
+    Jungnang : 25
 }
