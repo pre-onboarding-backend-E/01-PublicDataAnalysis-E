@@ -6,6 +6,16 @@ const moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
 
+interface IReq {
+  key: string;
+  service: string;
+  type: string;
+  start: number;
+  end: number;
+  region: string;
+  now?: string;
+}
+
 @Injectable()
 export class PublicApiService {
   logger: Logger;
@@ -63,19 +73,31 @@ export class PublicApiService {
     const now = moment().format('YYYYMMDDHH') - 1;
     console.log(now);
     try {
-      const result = await axios(
-        `http://openapi.seoul.go.kr:8088/${serviceKey}/json/DrainpipeMonitoringInfo/${start}/${end}/${id}/${now}/${now}`,
-      );
-      const rowLength = result.data.DrainpipeMonitoringInfo.row.length;
+      const req: IReq = {
+        key: process.env.PIPE_API_ACCESS_KEY,
+        service: 'DrainpipeMonitoringInfo',
+        type: 'json',
+        start: 1,
+        end: 1000,
+        region: code,
+        now: String(moment().format('YYYYMMDDHH') - 1),
+      };
 
+      const res = await axios({
+        url: `http://openapi.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/${req.region}/${req.now}/${req.now}`,
+        method: 'GET',
+      });
+      const rowLength = res.data.DrainpipeMonitoringInfo.row.length;
       const waterLevel = (
-        result.data.DrainpipeMonitoringInfo.row.reduce((acc, cur) => {
+        res.data.DrainpipeMonitoringInfo.row.reduce((acc, cur) => {
           acc += Number(cur.MEA_WAL);
           return acc;
         }, 0) / rowLength
-      ).toFixed(5);
+      ).toFixed(4);
       console.log(waterLevel);
       return waterLevel;
-    } catch (e) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

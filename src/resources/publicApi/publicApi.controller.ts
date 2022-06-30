@@ -1,5 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
+
+import { GubnType } from 'src/config/gubnType';
+
 import { ResponseDto } from './dto/publicApiResponse';
+
 import { PublicApiService } from './publicApi.service';
 
 @Controller()
@@ -19,7 +23,9 @@ export class PublicApiController {
   }
 
   @Get('publicData2/:id')
-  getWaterLevelData(@Param('id') id: string) {
-    return this.publicApiService.getWaterLevelData({ id });
+  getPublicData2(@Param('id') id: string) {
+    const code = GubnType[id]['code'];
+    console.log(code);
+    return this.publicApiService.b({ code });
   }
 }
