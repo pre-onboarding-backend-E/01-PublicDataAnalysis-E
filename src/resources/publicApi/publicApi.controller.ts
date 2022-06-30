@@ -16,11 +16,4 @@ export class PublicApiController {
   getRainfallData(@Param('region') region: string) {
     return this.publicApiService.getRainfallData(region);
   }
-
-  @Get('watarlevel/:id')
-  getWaterLevelData(@Param('id') id: string) {
-    const code = GubnType[id]['code'];
-    console.log(code);
-    return this.publicApiService.getWaterLevelData({ code });
-  }
 }

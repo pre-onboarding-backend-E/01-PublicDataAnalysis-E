@@ -24,58 +24,55 @@ export class PublicApiService {
     this.logger = new Logger();
   }
 
-  async getWaterLevelAndRainfall(id: string): Promise<ResponseDto> {
-    const code = GubnType[id]['code'];
-    const region = GubnType[id]['name'];
+  async getWaterLevelAndRainfall(region: string): Promise<ResponseDto> {
+    const regionCode = GubnType[region]['code'];
+    const regionName = GubnType[region]['name'];
+    const waterLevel = await this.getWaterLevelData(regionCode);
+    const rainfall = await this.getRainfallData(regionName);
 
-    const waterLevel = await this.getWaterLevelData({ code });
-    const rainfall = await this.getRainfallData(region);
-
-    const responseDto: ResponseDto = new ResponseDto();
-    responseDto.gubnCode = GubnType[id]['code'];
-    responseDto.gubnName = GubnType[id]['name'];
-    responseDto.waterLevel = waterLevel;
-    responseDto.rainfall = rainfall;
-    responseDto.date = moment();
-    
-    return responseDto;
+    const resOutput: ResponseDto = {
+      gubnCode: regionCode, // 지역코드
+      gubnName: regionName, // 지역명
+      waterLevel: waterLevel, // 하수관 수위 현황 평균값
+      rainfall: rainfall, // 강우량 현황 평균값
+      date: moment().format('YYYY/MM/DD/HH:MM'),
+    };
+    console.log(resOutput.date);
+    return resOutput;
   }
 
-  async getRainfallData(region: string): Promise<number> {
+  async getRainfallData(regionName: string): Promise<number> {
     const key = process.env.RAINFALL_API_ACCESS_KEY;
     const start = 1;
     const end = 282;
 
     try {
       const response = await axios({
-        url: `http://openAPI.seoul.go.kr:8088/${key}/json/ListRainfallService/${start}/${end}/` + encodeURI(region),
+        url: `http://openAPI.seoul.go.kr:8088/${key}/json/ListRainfallService/${start}/${end}/` + encodeURI(regionName),
         method: 'GET',
       });
 
-      let totalRainfall = 0, count = 0;
+      let totalRainfall = 0,
+        count = 0;
       const now = moment(response.data.ListRainfallService.row[0].RECEIVE_TIME);
-      
+      console.log(now);
+
       response.data.ListRainfallService.row.map(r => {
         const receive = moment(r.RECEIVE_TIME);
-        
+
         if (moment.duration(now.diff(receive)).asMinutes() < 60) {
           totalRainfall += Number(r.RAINFALL10);
           count += 1;
         }
       });
-      
-      return totalRainfall / count;
+      const result = Number((totalRainfall / count).toFixed(4));
+      return result;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async getWaterLevelData({ code }): Promise<number> {
-    const serviceKey = process.env.PIPE_API_ACCESS_KEY;
-    const start = 1;
-    const end = 30;
-    const now = moment().format('YYYYMMDDHH') - 1;
-    console.log(now);
+  async getWaterLevelData(regionCode: string): Promise<number> {
     try {
       const req: IReq = {
         key: process.env.PIPE_API_ACCESS_KEY,
@@ -83,7 +80,7 @@ export class PublicApiService {
         type: 'json',
         start: 1,
         end: 1000,
-        region: code,
+        region: regionCode,
         now: String(moment().format('YYYYMMDDHH') - 1),
       };
 
