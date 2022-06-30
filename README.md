@@ -9,6 +9,9 @@
     - cd 01-PublicDataAnalysis-E
     - yarn install
     - yarn start:dev
+    ## docker 실행 시
+    - docker compose build
+    - docker compose up
 
 ### ENV
 - localhost:8081/apiDoc (포트 번호는 env/development.env 의 SERVER_PORT) 에서 swagger 문서를 확인 가능합니다.  (api 명세화 목적)
@@ -16,7 +19,7 @@
 
 ### 요구사항 분석 및 구현 과정 ✨
 0. 서울시의 하수관로 수위 현황*(A) 과 강우량 정보 현황*(B)을 open api를 활용하여 가져오고 이를 각 구 별로 구분하여 볼 수 있도록  REST API를 설계합니다.
-1. *A와 *B를 호출하는 api 구현합니다.
+1. *A와 *B를 호출하는 api를 구현합니다.
 2. *A와 *B의 공통 key 인 '구 이름' 을 구분코드로 처리 후 (type화) 이를 기준으로 데이터를 가져오도록 설계합니다.
 3.  *A와 *B의 response 데이터를 구 별 / 구분 코드 별로 Join 하여 가져옵니다.
 4. 테스트 케이스를 작성하여 테스트를 거칩니다.
