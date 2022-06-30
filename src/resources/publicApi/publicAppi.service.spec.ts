@@ -19,7 +19,7 @@ describe('PublicApiService', () => {
 
     describe("강우량 정보 요청", () => {
         it("강우량 데이터 요청 성공", () => {
-            const result = service.a(); 
+            // const result = service.a(); 
             // expect(result).toEqual({}); 
         }); 
 
@@ -37,7 +37,7 @@ describe('PublicApiService', () => {
 
     describe("하수관로 수위 현황 정보 요청", () => {
         it("하수관로 데이터 요청 성공", () => {
-            const result = service.a(); 
+            // const result = service.a(); 
             // expect(result).toEqual({}); 
         }); 
 
