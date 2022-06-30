@@ -18,12 +18,10 @@ export class PublicApiService {
     const type = 'json';
     const start = 1;
     const end = 1000;
-    
+
     try {
       const res = await axios({
-        url:
-          `http://openAPI.seoul.go.kr:8088/${key}/${type}/${service}/${start}/${end}/` +
-          encodeURI(region),
+        url: `http://openAPI.seoul.go.kr:8088/${key}/${type}/${service}/${start}/${end}/` + encodeURI(region),
         method: 'GET',
       });
 
@@ -34,25 +32,25 @@ export class PublicApiService {
   }
 
   async b({ id }) {
-    try {
-      const serviceKey = process.env.PIPE_API_ACCESS_KEY;
-      const start = 1;
-      const end = 30;
+    const serviceKey = process.env.PIPE_API_ACCESS_KEY;
+    const start = 1;
+    const end = 30;
+    const now = moment().format('YYYYMMDDHH') - 1;
 
-      const now = moment().format('YYYYMMDDHH') - 1;
-      console.log(now);
+    try {
       const result = await axios(
         `http://openapi.seoul.go.kr:8088/${serviceKey}/json/DrainpipeMonitoringInfo/${start}/${end}/${id}/${now}/${now}`,
       );
       const rowLength = result.data.DrainpipeMonitoringInfo.row.length;
 
-      const water = (
+      const waterLevel = (
         result.data.DrainpipeMonitoringInfo.row.reduce((acc, cur) => {
           acc += Number(cur.MEA_WAL);
           return acc;
         }, 0) / rowLength
       ).toFixed(5);
-      console.log(water);
+      console.log(waterLevel);
+      return waterLevel;
     } catch (e) {}
   }
 }
