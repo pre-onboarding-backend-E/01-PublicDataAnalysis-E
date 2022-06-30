@@ -41,11 +41,11 @@
 
 ## commit convention
 [Main]
-- ADD : 기능 신규 개발 
-- MODIFY : 기존 기능 수정
-- REFACTOR : 기존 기능 개선
-- FIX : 버그 픽스
-- REMOVE : 불필요한 로직 제거
-- COMMENT : 코드 리뷰 반영 결과
+- ADD / 기능 신규 개발 
+- MODIFY / 기존 기능 수정
+- REFACTOR / 기존 기능 개선
+- FIX / 버그 픽스
+- REMOVE / 불필요한 로직 제거
+- COMMENT / 코드 리뷰 반영 결과
 [Sub]
 - git issue card - task를 기반으로 상세 커밋 내용을 한 줄 내외로 작성
