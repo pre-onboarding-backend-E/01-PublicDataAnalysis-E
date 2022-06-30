@@ -11,7 +11,7 @@ import { PublicApiService } from './resources/publicApi/publicApi.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `env/development.env`,
+      envFilePath: [`env/development.env`, `env/.env`],
     }),
     // TypeOrmModule.forRootAsync({
     //   imports: [ConfigModule],
