@@ -37,18 +37,21 @@ export class PublicApiService {
       rainfall: rainfall, // 강우량 현황 평균값
       date: moment().format('YYYY/MM/DD/HH:MM'),
     };
-    console.log(resOutput.date);
     return resOutput;
   }
 
   async getRainfallData(regionName: string): Promise<number> {
-    const key = process.env.RAINFALL_API_ACCESS_KEY;
-    const start = 1;
-    const end = 282;
-
+    const req: IReq = {
+      key: process.env.RAINFALL_API_ACCESS_KEY,
+      service: 'ListRainfallService',
+      type: 'json',
+      start: 1,
+      end: 282,
+      region: regionName
+    }
     try {
       const response = await axios({
-        url: `http://openAPI.seoul.go.kr:8088/${key}/json/ListRainfallService/${start}/${end}/` + encodeURI(regionName),
+        url: `http://openAPI.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/` + encodeURI(req.region),
         method: 'GET',
       });
 
@@ -73,17 +76,17 @@ export class PublicApiService {
   }
 
   async getWaterLevelData(regionCode: string): Promise<number> {
-    try {
-      const req: IReq = {
-        key: process.env.PIPE_API_ACCESS_KEY,
-        service: 'DrainpipeMonitoringInfo',
-        type: 'json',
-        start: 1,
-        end: 1000,
-        region: regionCode,
-        now: String(moment().format('YYYYMMDDHH') - 1),
-      };
+    const req: IReq = {
+      key: process.env.PIPE_API_ACCESS_KEY,
+      service: 'DrainpipeMonitoringInfo',
+      type: 'json',
+      start: 1,
+      end: 1000,
+      region: regionCode,
+      now: String(moment().format('YYYYMMDDHH') - 1),
+    };
 
+    try {
       const res = await axios({
         url: `http://openapi.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/${req.region}/${req.now}/${req.now}`,
         method: 'GET',
