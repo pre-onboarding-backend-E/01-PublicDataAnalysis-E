@@ -1,4 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { Gubntype } from 'src/config/gubnType';
 import { PublicApiService } from './publicApi.service';
 PublicApiService;
 
@@ -13,6 +14,8 @@ export class PublicApiController {
 
   @Get('publicData2/:id')
   getPublicData2(@Param('id') id: string) {
-    return this.publicApiService.b({ id });
+    const code = Gubntype[id]['code'];
+    console.log(code);
+    return this.publicApiService.b({ code });
   }
 }
