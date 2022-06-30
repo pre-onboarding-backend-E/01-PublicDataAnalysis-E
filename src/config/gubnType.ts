@@ -1,4 +1,4 @@
-export const Gubntype = {
+export const GubnType = {
   gangnam: { name: '강남', code: '23' },
   gangdong: { name: '강동', code: '25' },
   gangbuk: { name: '강북', code: '09' },

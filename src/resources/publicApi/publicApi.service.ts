@@ -41,7 +41,7 @@ export class PublicApiService {
     }
   }
 
-  async b({ code }) {
+  async b({ id }) {
     try {
       const req: IReq = {
         key: process.env.PIPE_API_ACCESS_KEY,
