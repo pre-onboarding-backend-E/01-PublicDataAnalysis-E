@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
+import { GubnType } from 'src/config/gubnType';
 import { ResponseDto } from './dto/publicApiResponse';
 
 const moment = require('moment');
@@ -23,21 +24,24 @@ export class PublicApiService {
     this.logger = new Logger();
   }
 
-  async getWaterLevelByRainfall(id: number, region: string) {
-    const waterLevel = await this.getWaterLevelData({ id });
+  async getWaterLevelAndRainfall(id: string): Promise<ResponseDto> {
+    const code = GubnType[id]['code'];
+    const region = GubnType[id]['name'];
+
+    const waterLevel = await this.getWaterLevelData({ code });
     const rainfall = await this.getRainfallData(region);
 
     const responseDto: ResponseDto = new ResponseDto();
-    //responseDto.gubnCode
-    //responseDto.gubnName
-    responseDto.waterLevel = Number(waterLevel);
+    responseDto.gubnCode = GubnType[id]['code'];
+    responseDto.gubnName = GubnType[id]['name'];
+    responseDto.waterLevel = waterLevel;
     responseDto.rainfall = rainfall;
     responseDto.date = moment();
     
     return responseDto;
   }
 
-  async getRainfallData(region: string) {
+  async getRainfallData(region: string): Promise<number> {
     const key = process.env.RAINFALL_API_ACCESS_KEY;
     const start = 1;
     const end = 282;
@@ -66,7 +70,7 @@ export class PublicApiService {
     }
   }
 
-  async getWaterLevelData({ id }) {
+  async getWaterLevelData({ code }): Promise<number> {
     const serviceKey = process.env.PIPE_API_ACCESS_KEY;
     const start = 1;
     const end = 30;
@@ -87,6 +91,7 @@ export class PublicApiService {
         url: `http://openapi.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/${req.region}/${req.now}/${req.now}`,
         method: 'GET',
       });
+
       const rowLength = res.data.DrainpipeMonitoringInfo.row.length;
       const waterLevel = (
         res.data.DrainpipeMonitoringInfo.row.reduce((acc, cur) => {
@@ -94,8 +99,8 @@ export class PublicApiService {
           return acc;
         }, 0) / rowLength
       ).toFixed(4);
-      console.log(waterLevel);
-      return waterLevel;
+
+      return Number(waterLevel);
     } catch (error) {
       console.log(error);
     }
