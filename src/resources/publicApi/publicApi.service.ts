@@ -14,18 +14,28 @@ export class PublicApiService {
 
   async getRainfallData(region: string) {
     const key = process.env.RAINFALL_API_ACCESS_KEY;
-    const service = 'ListRainfallService';
-    const type = 'json';
     const start = 1;
-    const end = 1000;
+    const end = 282;
 
     try {
-      const res = await axios({
-        url: `http://openAPI.seoul.go.kr:8088/${key}/${type}/${service}/${start}/${end}/` + encodeURI(region),
+      const response = await axios({
+        url: `http://openAPI.seoul.go.kr:8088/${key}/json/ListRainfallService/${start}/${end}/` + encodeURI(region),
         method: 'GET',
       });
 
-      return res.data;
+      let totalRainfall = 0, count = 0;
+      const now = moment(response.data.ListRainfallService.row[0].RECEIVE_TIME);
+      
+      response.data.ListRainfallService.row.map(r => {
+        const receive = moment(r.RECEIVE_TIME);
+        
+        if (moment.duration(now.diff(receive)).asMinutes() < 60) {
+          totalRainfall += Number(r.RAINFALL10);
+          count += 1;
+        }
+      });
+
+      return totalRainfall / count;
     } catch (error) {
       console.error(error);
     }
