@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
+import { ResponseDto } from './dto/publicApiResponse';
 
 const moment = require('moment');
 require('moment-timezone');
@@ -10,6 +11,20 @@ export class PublicApiService {
   logger: Logger;
   constructor() {
     this.logger = new Logger();
+  }
+
+  async getWaterLevelByRainfall(id: number, region: string) {
+    const waterLevel = await this.getWaterLevelData({ id });
+    const rainfall = await this.getRainfallData(region);
+
+    const responseDto: ResponseDto = new ResponseDto();
+    //responseDto.gubnCode
+    //responseDto.gubnName
+    responseDto.waterLevel = Number(waterLevel);
+    responseDto.rainfall = rainfall;
+    responseDto.date = moment();
+    
+    return responseDto;
   }
 
   async getRainfallData(region: string) {
@@ -34,19 +49,19 @@ export class PublicApiService {
           count += 1;
         }
       });
-
+      
       return totalRainfall / count;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async b({ id }) {
+  async getWaterLevelData({ id }) {
     const serviceKey = process.env.PIPE_API_ACCESS_KEY;
     const start = 1;
     const end = 30;
     const now = moment().format('YYYYMMDDHH') - 1;
-
+    console.log(now);
     try {
       const result = await axios(
         `http://openapi.seoul.go.kr:8088/${serviceKey}/json/DrainpipeMonitoringInfo/${start}/${end}/${id}/${now}/${now}`,
