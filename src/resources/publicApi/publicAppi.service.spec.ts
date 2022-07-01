@@ -1,11 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ResponseDto } from './dto/publicApiResponse';
 import { PublicApiService } from './publicApi.service';
 
 describe('PublicApiService', () => {
     let service: PublicApiService; 
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [PublicApiService],
         }).compile(); 
@@ -17,39 +18,27 @@ describe('PublicApiService', () => {
         expect(service).toBeDefined();
       });
 
-    describe("강우량 정보 요청", () => {
-        it("강우량 데이터 요청 성공", () => {
-            // const result = service.a(); 
-            // expect(result).toEqual({}); 
+    describe("강우량과 하수관로 수위 현황 결합 데이터 요청", () => {
+        it("데이터 요청 성공", async () => {
+            const result = await service.getWaterLevelAndRainfall("gangnam"); 
+            expect(result).toHaveProperty("date"); 
+            expect(result).toHaveProperty("gubnCode"); 
+            expect(result).toHaveProperty("gubnName"); 
+            expect(result).toHaveProperty("waterLevel"); 
+            expect(result).toHaveProperty("rainfall");  
         }); 
 
-        it("요청 시 입력값이 유효하지 않음", () => {
+        it("요청 시 입력값이 유효하지 않음", async() => {
+            // 400 Bad Request 
+            // try{
+            //     const result = await service.getWaterLevelAndRainfall("gangnaaaam");
+            //     console.log(result); 
+            //   } catch(e) {
+            //     // 예외 처리 어떻게 할지 보고 정리 
+            //     console.log(e); 
+            //     // expect(e).toBeInstanceOf(NotFoundException);  // ! nest js 내장된 예외 처리 
+            //   }
         }); 
-
-        it("요청 시 값의 타입이 유효하지 않음", () => {
-
-        });
-
-        it("요청 시작 위치와 종료 위치가 유효하지 않음", () => {
-
-        });
     }); 
 
-    describe("하수관로 수위 현황 정보 요청", () => {
-        it("하수관로 데이터 요청 성공", () => {
-            // const result = service.a(); 
-            // expect(result).toEqual({}); 
-        }); 
-
-        it("요청 시 입력값이 유효하지 않음", () => {
-        }); 
-
-        it("요청 시 값의 타입이 유효하지 않음", () => {
-
-        });
-
-        it("요청 시작 위치와 종료 위치가 유효하지 않음", () => {
-
-        });
-    })
 })
