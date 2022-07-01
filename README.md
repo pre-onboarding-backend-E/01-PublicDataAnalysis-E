@@ -13,7 +13,9 @@
     - docker compose build
     - docker compose up
 
-
+### 테스트 실행
+    - 유닛 테스트: npm run test
+    - e2e 테스트: npm run test:e2e
 
 ### 환경변수 설정
 
@@ -37,7 +39,6 @@ PIPE_API_ACCESS_KEY= ??  // 서울시 하수관로 수위 현황 key
 ### API 문서
 
 * localhost:8081/apiDoc
-
 
 
 ### 요구사항 분석 및 구현 과정 ✨

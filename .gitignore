@@ -7,8 +7,7 @@
 node_modules/
 dist/
 #yarn.lock
-
-env/.env
+#env/.env
 
 # Compiled Java class files
 *.class
