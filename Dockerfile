@@ -1,4 +1,4 @@
-FROM node:17
+FROM node:17.2.0-alpine
 
 WORKDIR /wanted/
 COPY ./package.json /wanted/
