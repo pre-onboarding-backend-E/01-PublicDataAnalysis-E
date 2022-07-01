@@ -1,5 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ErrorType } from 'src/error/errorType.enum';
+import { ErrorResponse } from 'src/http/dto';
 import { ResponseDto } from './dto/publicApiResponse';
 import { PublicApiService } from './publicApi.service';
 
@@ -29,16 +31,21 @@ describe('PublicApiService', () => {
         }); 
 
         it("요청 시 입력값이 유효하지 않음", async() => {
-            // 400 Bad Request 
-            // try{
-            //     const result = await service.getWaterLevelAndRainfall("gangnaaaam");
-            //     console.log(result); 
-            //   } catch(e) {
-            //     // 예외 처리 어떻게 할지 보고 정리 
-            //     console.log(e); 
-            //     // expect(e).toBeInstanceOf(NotFoundException);  // ! nest js 내장된 예외 처리 
-            //   }
+            try{
+                await service.getWaterLevelAndRainfall("gangnaaaam");
+              } catch(e) {
+                expect(e).toBeInstanceOf(ErrorResponse); 
+                expect(e.statusCode).toEqual(400); 
+              }
+        }); 
+
+        it("요청 시 입력값이 없음", async() => {
+            try{
+                await service.getWaterLevelAndRainfall("");
+              } catch(e) {
+                expect(e).toBeInstanceOf(ErrorResponse); 
+                expect(e.statusCode).toEqual(400); 
+              }
         }); 
     }); 
-
 })
