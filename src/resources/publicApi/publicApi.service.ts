@@ -31,9 +31,9 @@ export class PublicApiService {
 
   /* 
     작성자 : 김용민
-      - 하수관로 수위와 강우량 정보를 받아와 리턴하는 메서드 구현
+      - 하수관로 수위와 강우량 정보를 받아와서 리턴하는 메서드 구현
     부작성자 : 박신영, 염하늘, 김태영
-      - 에러처리 로직 추가
+      - 에러 처리 로직 추가
       - response dto 수정
   */
   async getWaterLevelAndRainfall(region: string | null): Promise<ResponseDto> {
@@ -61,8 +61,8 @@ export class PublicApiService {
     작성자 : 김용민
       - 강우량 정보를 받아오는 서비스 로직 구현
     부작성자 : 염하늘, 김태영, 박신영
-      - 하드코딩되어 있던 url 정보 인터페이스를 사용하여 정리
-      - map 대신 foreach를 사용하여 속도 향상
+      - 하드코딩되어 있던 url 정보를 인터페이스를 사용하여 정리
+      - map 대신 forEach를 사용하여 속도 향상
   */
   async getRainfallData(regionName: string): Promise<number> {
     const req: IReq = {
@@ -84,7 +84,7 @@ export class PublicApiService {
       let totalRainfall = 0,
         count = 0;
       const now = moment(response.data.ListRainfallService.row[0].RECEIVE_TIME);
-   
+
       response.data.ListRainfallService.row.forEach(r => {
         const receive = moment(r.RECEIVE_TIME);
 
@@ -102,6 +102,7 @@ export class PublicApiService {
 
   /* 
     작성자 : 김태영
+      - 하수관로 수위 정보를 받아오는 서비스 로직 구현
     부작성자 : 염하늘, 박신영, 김용민
   */
   async getWaterLevelData(regionCode: string): Promise<number> {

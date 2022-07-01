@@ -9,11 +9,13 @@
     - cd 01-PublicDataAnalysis-E
     - yarn install
     - yarn start:dev
-    ## docker 실행 시
+    ## docker 실행 시 🐳
     - docker compose build
     - docker compose up
 
-
+### 테스트 실행
+    - 유닛 테스트: npm run test
+    - e2e 테스트: npm run test:e2e
 
 ### 환경변수 설정
 
@@ -39,7 +41,6 @@ PIPE_API_ACCESS_KEY= ??  // 서울시 하수관로 수위 현황 key
 * localhost:8081/apiDoc
 
 
-
 ### 요구사항 분석 및 구현 과정 ✨
 
 0. 서울시의 하수관로 수위 현황*(A) 과 강우량 정보 현황*(B)을 Open API를 활용하여 수집하고 이를 각 구(행정구역) 별로 하수관로 수위과 강우량을 파악할 수 있는 REST API를 설계합니다.
@@ -60,13 +61,13 @@ PIPE_API_ACCESS_KEY= ??  // 서울시 하수관로 수위 현황 key
 - 관측소가 많은 경우, 데이터 호출 가능 개수(1000 row)의 제한으로 인해 1시간의 평균치를 내기엔 어려운 경우도 필연적으로 발생합니다. 이를 고려하며 가장 최신의 데이터를, 최대한 많이 호출하여, 정확한 평균치를 낼 수 있도록 하였습니다.
 
 ### 배포
-()
+
 
 ## ETC
 1. status Code : 200 / 201 에 해당하는 경우, 해당 data와 status code만 response로 보여집니다. 
 2. error의 경우 어떤 error에 해당하는지 message도 함께 response로 확인 가능합니다.
 3. api 호출 시 필요한 값들의 경우 interface화 하였습니다.
-4. 서울시 구 값들은 type으로 관리합니다. ex) GANGNAM : 1 
+4. 서울시 구 값들은 type으로 관리합니다. ex)  gangnam: { name: '강남', code: '23' } 
 
 ## commit convention
 [Main]
