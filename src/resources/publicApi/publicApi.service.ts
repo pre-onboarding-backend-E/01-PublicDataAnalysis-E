@@ -19,7 +19,8 @@ interface IReq {
   start: number;
   end: number;
   region: string;
-  now?: string;
+  time1?: string;
+  time2?: string;
 }
 
 @Injectable()
@@ -113,12 +114,13 @@ export class PublicApiService {
       start: 1,
       end: 1000,
       region: regionCode,
-      now: String(moment().format('YYYYMMDDHH') - 1),
+      time1: String(moment().format('YYYYMMDDHH') - 1),
+      time2: String(moment().format('YYYYMMDDHH')),
     };
 
     try {
       const res = await axios({
-        url: `http://openapi.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/${req.region}/${req.now}/${req.now}`,
+        url: `http://openapi.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/${req.region}/${req.time1}/${req.time2}`,
         method: 'GET',
       });
 
