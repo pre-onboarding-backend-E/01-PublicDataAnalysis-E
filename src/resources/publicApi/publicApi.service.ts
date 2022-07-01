@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
+import { throwError } from 'rxjs';
 import { GubnType } from 'src/config/gubnType';
+import { ErrorType } from 'src/error/errorType.enum';
+import { ErrorResponse } from 'src/http/dto';
 import { ResponseDto } from './dto/publicApiResponse';
 
 const moment = require('moment');
@@ -24,7 +27,12 @@ export class PublicApiService {
     this.logger = new Logger();
   }
 
-  async getWaterLevelAndRainfall(region: string): Promise<ResponseDto> {
+  async getWaterLevelAndRainfall(region: string | null): Promise<ResponseDto> {
+    const allGubn = Object.keys(GubnType);
+    if (allGubn.indexOf(region) == -1) {
+      throw ErrorResponse.error(ErrorType.BAD_REQUEST);
+      // ErrorResponse.함수명(errorType-enum)
+    }
     const regionCode = GubnType[region]['code'];
     const regionName = GubnType[region]['name'];
     const waterLevel = await this.getWaterLevelData(regionCode);
@@ -47,20 +55,21 @@ export class PublicApiService {
       type: 'json',
       start: 1,
       end: 282,
-      region: regionName
-    }
+      region: regionName,
+    };
     try {
       const response = await axios({
-        url: `http://openAPI.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/` + encodeURI(req.region),
+        url:
+          `http://openAPI.seoul.go.kr:8088/${req.key}/${req.type}/${req.service}/${req.start}/${req.end}/` +
+          encodeURI(req.region),
         method: 'GET',
       });
 
       let totalRainfall = 0,
         count = 0;
       const now = moment(response.data.ListRainfallService.row[0].RECEIVE_TIME);
-      console.log(now);
-
-      response.data.ListRainfallService.row.map(r => {
+   
+      response.data.ListRainfallService.row.forEach(r => {
         const receive = moment(r.RECEIVE_TIME);
 
         if (moment.duration(now.diff(receive)).asMinutes() < 60) {
