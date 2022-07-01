@@ -10,6 +10,11 @@ import { AppService } from 'src/resources/app/app.service';
 
 const path = require('path');
 
+/*
+    작성자 : 박신영
+      - 프로젝트 대한 테스트 코드 작성
+     */
+    
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
