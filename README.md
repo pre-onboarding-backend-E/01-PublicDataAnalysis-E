@@ -14,8 +14,8 @@
     - docker compose up
 
 ### 테스트 실행
-    - 유닛 테스트: npm run test
-    - e2e 테스트: npm run test:e2e
+    - 유닛 테스트: yarn test
+    - e2e 테스트: yarn test:e2e
 
 ### 환경변수 설정
 
