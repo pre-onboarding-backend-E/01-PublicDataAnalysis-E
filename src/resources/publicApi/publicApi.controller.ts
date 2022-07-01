@@ -1,5 +1,4 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { DefaultResponse } from 'src/http/dto';
 import { PublicApiService } from './publicApi.service';
 

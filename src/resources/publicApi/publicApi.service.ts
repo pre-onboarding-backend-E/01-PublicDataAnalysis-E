@@ -28,7 +28,6 @@ export class PublicApiService {
   }
 
   async getWaterLevelAndRainfall(region: string | null): Promise<ResponseDto> {
-    
     const allGubn = Object.keys(GubnType);
     if (allGubn.indexOf(region) == -1) {
       throw ErrorResponse.error(ErrorType.BAD_REQUEST);
@@ -50,8 +49,6 @@ export class PublicApiService {
   }
 
   async getRainfallData(regionName: string): Promise<number> {
-    console.log('rainService');
-
     const req: IReq = {
       key: process.env.RAINFALL_API_ACCESS_KEY,
       service: 'ListRainfallService',
@@ -71,7 +68,7 @@ export class PublicApiService {
       let totalRainfall = 0,
         count = 0;
       const now = moment(response.data.ListRainfallService.row[0].RECEIVE_TIME);
-      // map -> For each (새로운 배열 저장할 필요 X , 속도 면에서 더 나음)
+   
       response.data.ListRainfallService.row.forEach(r => {
         const receive = moment(r.RECEIVE_TIME);
 
@@ -88,7 +85,6 @@ export class PublicApiService {
   }
 
   async getWaterLevelData(regionCode: string): Promise<number> {
-    console.log('waterService');
     const req: IReq = {
       key: process.env.PIPE_API_ACCESS_KEY,
       service: 'DrainpipeMonitoringInfo',
